@@ -2,69 +2,98 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>AI vs Human Text Detector</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8f9fa;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        h1 {
-            color: #333;
-        }
-        
-        textarea {
-            width: 60%;
-            height: 120px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background: #0056b3;
-        }
-        
-        .result {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #222;
-        }
-        
-        .error {
-            color: red;
-            margin-top: 15px;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MAYANETRA | AI vs Human Text Detector</title>
+
+    <!-- Fonts + Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 
 <body>
-    <h1>AI vs Human Text Detector</h1>
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="brand">
+            <span class="logo">👁️</span>
+            <span class="title">MAYANETRA</span>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-link active">Detector</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Contact</a>
+        </nav>
+        <div class="actions">
+            <button id="themeToggle" class="ghost-btn" title="Toggle dark mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+            <a class="primary-btn" href="https://github.com/vedant7115/MAYANETRA-AI-VS-HUMAN-TEXT-PREDICTOR" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+        </div>
+    </header>
 
-    <form action="/predict" method="POST">
-        <textarea name="text" placeholder="Paste your text here..." required>{{ text if text else "" }}</textarea><br>
-        <button type="submit">Check</button>
-    </form>
+    <!-- Main Card -->
+    <main class="shell">
+        <section class="card">
+            <h1 class="headline">Detect whether a text is <span class="accent">AI Generated</span> or <span class="accent">Human Written</span></h1>
 
-    {% if prediction %}
-    <div class="result">Result: {{ prediction }}</div>
-    {% endif %} {% if error %}
-    <div class="error">{{ error }}</div>
-    {% endif %}
+            <div class="controls-row">
+                <div class="stat small"><i class="fa-regular fa-file-lines"></i> <span id="wc">0</span> words</div>
+                <div class="stat small"><i class="fa-regular fa-rectangle-list"></i> <span id="cc">0</span> chars</div>
+                <div class="spacer"></div>
+                <button id="sampleBtn" class="ghost-btn"><i class="fa-regular fa-lightbulb"></i> Sample</button>
+                <button id="clearBtn" class="ghost-btn"><i class="fa-regular fa-trash-can"></i> Clear</button>
+            </div>
+
+            <form id="predictForm" class="form">
+                <textarea id="textInput" rows="10" placeholder="Paste or type your text here…"></textarea>
+
+                <div class="btn-row">
+                    <button id="analyzeBtn" class="primary-btn big" type="submit">
+            <span class="btn-content"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyze</span>
+            <span class="loader"></span>
+          </button>
+                    <button id="copyBtn" class="ghost-btn" type="button" title="Copy text"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+            </form>
+
+            <!-- Result Panel -->
+            <div id="resultPanel" class="result hidden">
+                <div class="result-title"><i class="fa-solid fa-sparkles"></i> Result</div>
+                <div id="resultBadge" class="badge">—</div>
+
+                <div class="meter-wrap">
+                    <div id="meter" class="meter"></div>
+                </div>
+                <div id="confidence" class="confidence">Confidence: —</div>
+
+                <div class="result-actions">
+                    <button id="saveHistory" class="ghost-btn"><i class="fa-regular fa-bookmark"></i> Save</button>
+                    <button id="clearResult" class="ghost-btn"><i class="fa-regular fa-circle-xmark"></i> Dismiss</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- History -->
+        <aside class="history">
+            <div class="history-head">
+                <h3><i class="fa-regular fa-clock"></i> History</h3>
+                <button id="clearHistory" class="ghost-btn tiny"><i class="fa-regular fa-trash-can"></i> Clear</button>
+            </div>
+            <div id="historyList" class="history-list"></div>
+        </aside>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Confetti -->
+    <canvas id="confettiCanvas" class="confetti"></canvas>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>
