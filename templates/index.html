@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI vs Human Text Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        textarea {
+            width: 60%;
+            height: 120px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+        }
+        
+        .error {
+            color: red;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AI vs Human Text Detector</h1>
+
+    <form action="/predict" method="POST">
+        <textarea name="text" placeholder="Paste your text here..." required>{{ text if text else "" }}</textarea><br>
+        <button type="submit">Check</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">Result: {{ prediction }}</div>
+    {% endif %} {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+</body>
+
+</html>
